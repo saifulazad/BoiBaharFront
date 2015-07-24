@@ -6,6 +6,7 @@
 *.ap_
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
+!app/libs/*
 
 # lint folder
 lint
@@ -49,6 +50,7 @@ Thumbs.db
 
 # backup files
 *.bak
+*~
 
 # gradle directory
 .gradle
