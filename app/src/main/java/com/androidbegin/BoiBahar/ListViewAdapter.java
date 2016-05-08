@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import com.androidbegin.BoiBahar.builtin.SingleItemView;
 import com.squareup.picasso.Picasso;
 
 public class ListViewAdapter extends BaseAdapter {

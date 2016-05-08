@@ -15,12 +15,10 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends Activity {
 
@@ -43,11 +43,14 @@ public class MainActivity extends Activity {
 
     Intent intent;
     private static String TAG = MainActivity.class.getSimpleName();
+    AsyncHttpClient client = new AsyncHttpClient();
 
     ArrayList<Book> arraylist = new ArrayList<Book>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.listview_main);
         String url = "http://saifulazad.pythonanywhere.com/books";
         // get action bar
@@ -57,54 +60,50 @@ public class MainActivity extends Activity {
         //get process bar
 
         final ProgressDialog pDialog = new ProgressDialog(this);
+
+        client.get(url, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                // called before request is started
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers,JSONObject response) {
+                // called when response HTTP status is "200 OK"
+                try {
+                    JSONArray ob = response.getJSONArray("books");
+                    Type listType = new TypeToken<ArrayList<Book>>() {
+                    }.getType();
+
+                    List<Book> books = new Gson().fromJson(ob.toString(), listType);
+                    arraylist.addAll(books);
+                    for (int i =0 ;i< arraylist.size();i++)
+                    {
+                        adapter.addBook(arraylist.get(i));
+                        Log.d("AUTHOR", arraylist.get(i).getPublication_name());
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    pDialog.hide();
+                    pDialog.dismiss();
+                }
+
+            }
+
+
+            @Override
+            public void onRetry(int retryNo) {
+                // called when request is retried
+            }
+        });
+
         pDialog.setMessage("Loading...");
         pDialog.show();
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-
-
-                        try {
-
-                            JSONArray ob = response.getJSONArray("books");
-
-                            Type listType = new TypeToken<ArrayList<Book>>() {
-                            }.getType();
-                            List<Book> books = new Gson().fromJson(ob.toString(), listType);
-
-                            arraylist.addAll(books);
-                            for (int i =0 ;i< arraylist.size();i++)
-                            {
-                                adapter.addBook(arraylist.get(i));
-                                Log.d("AUTHOR", arraylist.get(i).getPublication_name());
-                            }
-                            Log.d("ARRAY", String.valueOf(arraylist.size()));
-                            pDialog.hide();
-                            pDialog.dismiss();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                     // Write Proper Message
-                        pDialog.hide();
-                        pDialog.dismiss();
-                    }
-                });
-
-        // Adding request to request queue
-
-        AppController.getInstance().addToRequestQueue(jsObjRequest);
 
 
 

@@ -1,9 +1,12 @@
-package com.androidbegin.BoiBahar;
+package com.androidbegin.BoiBahar.builtin;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.androidbegin.BoiBahar.MainActivity;
+import com.androidbegin.BoiBahar.R;
 
 public class Splashscreen extends Activity {
 

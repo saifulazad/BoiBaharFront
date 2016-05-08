@@ -23,10 +23,9 @@
 
         android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name="com.androidbegin.BoiBahar.AppController">
+        android:theme="@style/AppTheme">
         <activity
-            android:name="com.androidbegin.BoiBahar.Splashscreen"
+            android:name=".builtin.Splashscreen"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +35,7 @@
         </activity>
         <activity android:name="com.androidbegin.BoiBahar.MainActivity" >
         </activity>
-        <activity android:name="com.androidbegin.BoiBahar.SingleItemView" >
+        <activity android:name=".builtin.SingleItemView" >
         </activity>
         <activity
             android:name="com.androidbegin.BoiBahar.About"

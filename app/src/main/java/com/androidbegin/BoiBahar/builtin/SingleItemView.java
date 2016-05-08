@@ -1,4 +1,4 @@
-package com.androidbegin.BoiBahar;
+package com.androidbegin.BoiBahar.builtin;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -11,6 +11,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidbegin.BoiBahar.About;
+import com.androidbegin.BoiBahar.Book;
+import com.androidbegin.BoiBahar.MainActivity;
+import com.androidbegin.BoiBahar.R;
 import com.squareup.picasso.Picasso;
 
 public class SingleItemView extends Activity {
